@@ -1,0 +1,36 @@
+Integrating Factory-enabled Tests to Maven
+
+  Add the following dependency to your POM:
+
+-------------
+    <dependency>
+      <groupId>com.saucelabs.selenium</groupId>
+      <artifactId>selenium-client-factory</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+-------------
+
+  If you are using a driver that's not in the factory jar, you'll also need to list them as a test-scoped dependency.
+
+  To set reasonable default values for configuration parameters while still allowing the user to override, configure your Surefire invocation like this:
+
+-------------
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <property>
+              <name>DEFAULT_SELENIUM_DRIVER</name>
+              <value>embedded-rc:</value>
+            </property>
+            <property>
+              <name>DEFAULT_SELENIUM_STARTING_URL</name>
+              <value>http://localhost:8080/</value>
+            </property>
+   ...
+-------------
+
+  Individual users can then override those values by setting "SELENIUM_DRIVER=..." and "SELENIUM_STARTING_URL=..." environment variables when invoking Maven, like <<<SELENIUM_DRIVER=http://server:4444/ mvn test>>>
